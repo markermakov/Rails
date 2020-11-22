@@ -1,80 +1,103 @@
+=begin
+правда не до конца понял фокуса с текущей станцией,
+как это должно в идеале выглядеть, как и путешествие между станциями
+туда сюда
+=end
+
 class Train
+
   attr_accessor :speed, :vagons
-  attr_reader :number, :type
+  attr_reader :number, :type, :current_station
+
   def initialize(speed = 0, number, type, vagons)
     @speed = speed
     @number = number
     @type = type
     @vagons = vagons
+    @current_station = current_station
   end
+
   def train_type
-    @@type = @type
-    puts "Поезд: #{@@type}"
+    @type
   end
+
   def go
     self.speed = @speed + 80
-    puts "Chooh, chooh!, скорость = #{speed}"
+    speed
   end
+
   def stop
     self.speed = 0
-    puts "Поезд остановился, скорость = #{speed}"
+    speed
   end
-  def vagon
-    puts "У поезда #{@vagons} вагонов"
-  end
+
   def vagon_add
-    if @speed == 0 then
+    if @speed == 0
       self.vagons = @vagons+1
     else
-      puts "Поезд в движении, сначала остановитесь"
+
     end
   end
+
   def vagon_minus
-    if @speed == 0 and @vagons != 1 then
+    if @speed == 0 && @vagons != 1 then
       self.vagons = @vagons-1
     elsif @speed == 0 then
-      puts "Поезд в движении, сначала остановитесь"
-    elsif @vagons == 1 then
-      puts "Нельзя убрать больше вагонов"
-    end
 
+    elsif @vagons == 1 then
+
+    end
   end
+
   def start_route(route)
-    @a = 0
-    @start_point = route.st[@a]
-    puts "Поезд на станции #{@start_point}"
-    puts "Следующая станция #{route.st[@a+1]}"
-    #puts @a
+    @current_station = route.stations[0]
   end
+
+  def next_station(route)
+    if @current_station == route.stations[0]
+      route.stations[1]
+    elsif @current_station == route.stations[1]
+      route.stations[2]
+    else
+
+    end
+  end
+
+  def previous_station(route)
+    if @current_station == route.stations[0]
+
+    elsif @current_station == route.stations[1]
+      route.stations[0]
+    else
+      route.stations[1]
+    end
+  end
+
   def go_forw(route)
       #if @a != 2 then
         #@a = @a+1
-        @next_point = route.st[@a+1]
-        puts "Предыдущая станция #{route.st[@a]}"
-        puts "Поезд на станции #{@next_point}"
-        @a = @a+1
-        if @a == 2 then
-          puts "Конечная"
-        else
-          puts "Следующая станция #{route.st[@a+1]}"
-        end
+    if @current_station == route.stations[0]
+      @current_station = route.stations[1]
+    elsif @current_station == route.stations[1]
+      @current_station = route.stations[2]
+    else
 
+    end
       #else
         #puts "Конечная, освободите вагон"
       #end
   end
+
   def go_back(route)
     #if @a != -1 then
       #@a = @a-1
-      @next_point = route.st[@a-1]
-      puts "Предыдущая станция #{route.st[@a]}"
-      puts "Поезд на станции #{@next_point}"
-      @a = @a-1
-      if @a == 0 then
-        puts "Конечная"
-      else
-        puts "Следующая станция #{route.st[@a-1]}"
-      end
+    if @current_station == route.stations[0]
+
+    elsif @current_station == route.stations[1]
+      @current_station = route.stations[0]
+    else
+      @current_station = route.stations[1]
+    end
     #else
       #puts "Конечная, освободите вагон"
     #end
